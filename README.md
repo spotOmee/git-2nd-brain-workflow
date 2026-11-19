@@ -52,6 +52,19 @@ git-2nd-brain-workflow/
 
 ---
 
+## ⚖️ Workflow Comparison: `/git-push` vs `/git-pull`
+
+| Feature | `/git-push` | `/git-pull` |
+| :--- | :--- | :--- |
+| **Primary Purpose** | Session memory serialization & export | Session memory recall & context hydration |
+| **When to Use** | At end of task, before quitting, or after major milestones | At start of conversation or when switching topics |
+| **Input Arguments** | None (reads full conversation history automatically) | Optional query/keyword (e.g., `/git-pull apk-build`) |
+| **Integrity Gate** | File exists, `> 500 bytes`, all 4 sections non-empty | Pulls remote, ranks top 1–3 matches, ingests full content |
+| **Remote Action** | Staged, committed with semantic message, pushed | `git pull origin main` to synchronize multi-device edits |
+| **Triggers** | `/git-push`, `/git push`, `save session to brain` | `/git-pull`, `/git pull`, `/git-pull <keyword>` |
+
+---
+
 ## 🚀 The `/git-push` Component
 
 The `/git-push` skill extracts the full narrative arc from your active conversation and commits it to your private Second Brain repository.
@@ -78,6 +91,30 @@ When `/git-push` executes, it automatically updates the `README.md` table in you
 ```
 
 For the complete technical breakdown, read [docs/git-push-explained.md](docs/git-push-explained.md).
+
+---
+
+## 🔄 The `/git-pull` Component
+
+The `/git-pull` skill queries your private Second Brain repository, pulls recent commits made across all devices, and hydrates active agent context.
+
+### How to Trigger:
+- `/git-pull` (Mode A: Overview of recent sessions)
+- `/git-pull <keyword>` or `/git-pull <phrase>` (Mode B: Deep keyword search & ranking)
+- `recall past session on <topic>`
+
+### Mode A: Overview (No Keyword)
+- Pulls latest remote commits (`git pull origin main`).
+- Reads `README.md` and the 5 most recent files in `sessions/`.
+- Summarizes recent projects, active tasks, and milestones.
+
+### Mode B: Deep Keyword Recall (`/git-pull <query>`)
+- Searches across `sessions/` and `artifacts/`.
+- Ranks matches using weighted relevance (+100 title match, +80 tag match, +50 story/notes match, +10 per keyword occurrence, recency tie-breaker).
+- Ingests top 1–3 matching markdown files into active agent memory.
+- Summarizes recalled milestones and continues the user's ongoing prompt without friction.
+
+For the complete technical breakdown, read [docs/git-pull-explained.md](docs/git-pull-explained.md).
 
 ---
 
